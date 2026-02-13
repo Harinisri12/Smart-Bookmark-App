@@ -13,7 +13,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="flex h-screen items-center justify-center bg-linear-to-br from-black via-gray-900 to-black">
       <div className="bg-gray-900/60 backdrop-blur-md p-10 rounded-2xl shadow-2xl border border-pink-500/20">
         <h1 className="text-3xl font-bold text-white mb-6 text-center">
           Smart Bookmark 💖
