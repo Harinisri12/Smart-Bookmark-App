@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
