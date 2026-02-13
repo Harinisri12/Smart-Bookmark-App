@@ -194,7 +194,7 @@ Configured:
 
 ```sql
 ALTER TABLE bookmarks REPLICA IDENTITY FULL;
-
+```
 ------------------------------------------------------------------------
 
 
