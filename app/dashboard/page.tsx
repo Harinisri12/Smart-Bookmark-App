@@ -55,6 +55,7 @@ export default function Dashboard() {
 
     setBookmarks(data || []);
   };
+  
 
   /* ---------------- AUTH ---------------- */
 
@@ -78,29 +79,38 @@ export default function Dashboard() {
 
   /* ---------------- REALTIME ---------------- */
 
-  useEffect(() => {
+useEffect(() => {
+  const setupRealtime = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) return;
+
     const channel = supabase
-      .channel("realtime-bookmarks")
+      .channel(`realtime-bookmarks-${user.id}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "bookmarks" },
-        (payload) => {
-          setBookmarks((prev) => [payload.new as Bookmark, ...prev]);
+        {
+          event: "*",
+          schema: "public",
+          table: "bookmarks",
+          filter: `user_id=eq.${user.id}`,
         },
-      )
-      .on(
-        "postgres_changes",
-        { event: "DELETE", schema: "public", table: "bookmarks" },
-        (payload) => {
-          setBookmarks((prev) => prev.filter((b) => b.id !== payload.old.id));
-        },
+        () => {
+          fetchBookmarks(); // ← always refetch
+        }
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  };
+
+  setupRealtime();
+}, []);
+
 
   /* ---------------- URL VALIDATION ---------------- */
 
@@ -188,7 +198,6 @@ export default function Dashboard() {
       return;
     }
 
-    setBookmarks((prev) => [data, ...prev]);
     setTitle("");
     setUrl("");
     setMessage({
@@ -210,7 +219,6 @@ export default function Dashboard() {
       return;
     }
 
-    setBookmarks((prev) => prev.filter((b) => b.id !== id));
     setMessage({
       type: "success",
       text: "Bookmark deleted successfully.",
@@ -291,27 +299,37 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Add Section */}
-        <div className="mb-10 flex gap-4">
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter bookmark title"
-            className="bg-[#16161d] border border-[#2a2a35] px-5 py-4 rounded-xl flex-1 outline-none"
-          />
-          <input
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com"
-            className="bg-[#16161d] border border-[#2a2a35] px-5 py-4 rounded-xl flex-1 outline-none"
-          />
-          <button
-            onClick={addBookmark}
-            className="px-8 py-4 rounded-xl bg-pink-500 hover:bg-pink-600 transition font-semibold"
-          >
-            Add +
-          </button>
-        </div>
+      {/* Add New Bookmark Card */}
+<div className="mb-12 bg-white/5 backdrop-blur-xl border border-pink-500/30 rounded-3xl p-8 shadow-xl">
+
+  <h2 className="text-2xl font-semibold mb-6">
+    Add <span className="text-pink-500">New Bookmark</span>
+  </h2>
+
+  <div className="flex flex-col md:flex-row gap-4">
+    <input
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+      placeholder="Enter bookmark title"
+      className="bg-white/5 border border-white/10 backdrop-blur-md px-5 py-4 rounded-xl flex-1 outline-none focus:border-pink-500/50 transition"
+    />
+
+    <input
+      value={url}
+      onChange={(e) => setUrl(e.target.value)}
+      placeholder="https://example.com"
+      className="bg-white/5 border border-white/10 backdrop-blur-md px-5 py-4 rounded-xl flex-1 outline-none focus:border-pink-500/50 transition"
+    />
+
+    <button
+      onClick={addBookmark}
+      className="px-8 py-4 rounded-xl bg-pink-500 hover:bg-pink-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-pink-500/30"
+    >
+      Add +
+    </button>
+  </div>
+</div>
+
 
         {/* Section Header */}
         <div className="mb-4">
@@ -418,13 +436,25 @@ export default function Dashboard() {
         </DragDropContext>
 
         {filteredBookmarks.length === 0 && (
-          <div className="text-center py-20 text-gray-500">
-            <p className="text-lg font-medium">
-              {search
-                ? "No bookmarks match your search."
-                : "You haven’t saved any bookmarks yet."}
-            </p>
-          </div>
+      <div className="mt-6">
+  <div className="bg-white/5 backdrop-blur-md border border-pink-500/30 rounded-3xl p-12 text-center shadow-xl">
+
+    <div className="mx-auto mb-6 w-14 h-14 rounded-full border border-pink-500/40 flex items-center justify-center">
+      <div className="w-6 h-6 bg-pink-500 rounded-sm rotate-45" />
+    </div>
+
+    <h3 className="text-2xl font-semibold mb-3">
+      No bookmarks yet
+    </h3>
+
+    <p className="text-gray-400 text-sm max-w-md mx-auto">
+      Your saved links will appear here.  
+      Add your first bookmark above to get started.
+    </p>
+
+  </div>
+</div>
+
         )}
 
         {deleteId && (
