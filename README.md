@@ -25,17 +25,6 @@ and clean UI interactions.
 
 ------------------------------------------------------------------------
 
-## Screenshots
-
-<div align="center">
-  <img src="./screenshots/login.png" alt="Login Screen" width="30%" />
-  <img src="./screenshots/empty-state.png" alt="Empty State" width="30%" />
-  <img src="./screenshots/bookmarks.png" alt="Dashboard" width="30%" />
-</div>
-
-
-------------------------------------------------------------------------
-
 ## Requirements Implemented
 
 ### Authentication
