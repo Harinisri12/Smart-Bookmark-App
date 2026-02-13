@@ -202,15 +202,14 @@ ALTER TABLE bookmarks REPLICA IDENTITY FULL;
 
 ### Table: `bookmarks`
 
-  Column       Type        Description
-  ------------ ----------- ------------------------------------
-  id           uuid        Primary key (auto-generated)
-  user_id      uuid        References authenticated user
-  url          text        Bookmark URL
-  title        text        Bookmark title
-  created_at   timestamp   Creation timestamp (default now())
-
-------------------------------------------------------------------------
+| Column     | Type      | Description                          |
+|------------|-----------|--------------------------------------|
+| id         | uuid      | Primary key (auto-generated)         |
+| user_id    | uuid      | References authenticated user        |
+| url        | text      | Bookmark URL                         |
+| title      | text      | Bookmark title                       |
+| created_at | timestamp | Creation timestamp (default now())   |
+----
 
 ### SQL Definition
 
