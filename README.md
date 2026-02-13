@@ -1,6 +1,6 @@
 # Smart Bookmark App
 
-smart-bookmark-app-kohl-iota.vercel.app
+https://smart-bookmark-app-kohl-iota.vercel.app
 ---------------------------------------------------------------------
 A real-time bookmark manager built with Next.js (App Router), Supabase,
 and Tailwind CSS.
