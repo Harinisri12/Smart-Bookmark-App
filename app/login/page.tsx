@@ -58,10 +58,11 @@ export default function LoginPage() {
           className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-2xl bg-white hover:bg-gray-100 transition-all duration-300 font-semibold text-gray-900 text-lg shadow-lg hover:shadow-xl border border-gray-200"
         >
           <img
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            alt="Google"
-            className="w-6 h-6"
-          />
+  src="/icons/google.svg"
+  alt="Google"
+  className="w-6 h-6"
+/>
+
           Continue with Google
         </button>
 
